@@ -25,7 +25,7 @@ export default function Layout() {
    return (
        <div className='min-h-screen flex flex-col'>
            <header className='bg-gray-200 text-black sticky top-0 h-14 flex justify-center items-center font-semibold uppercase'>
-               Cloudinary Actions
+               Auth
            </header>
            <div className='flex flex-col md:flex-row flex-1'>
                <aside className='bg-gray-100 w-full md:w-60'>
