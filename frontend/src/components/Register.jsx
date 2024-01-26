@@ -36,10 +36,10 @@ const Register = () => {
         <input type="password" name="password" onChange={handleChange} required />
 
         <label>First Name:</label>
-        <input type="text" name="firstName" onChange={handleChange} required />
+        <input type="text" name="first_name" onChange={handleChange} required />
 
         <label>Last Name:</label>
-        <input type="text" name="lastName" onChange={handleChange} required />
+        <input type="text" name="last_name" onChange={handleChange} required />
 
         <button type="submit">Register</button>
       </form>
