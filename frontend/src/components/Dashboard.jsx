@@ -17,7 +17,12 @@ const Dashboard = () => {
         setUser(response.data);
       } catch (error) {
         console.error('Error fetching user details', error.response.data);
-        // Handle error, e.g., redirect to login
+        if (error.response.status === 401) {
+          // Redirect to login if the access token is not valid or expired
+          window.location.href = '/login';
+        } else {
+          // Handle other errors as needed
+        }
       }
     };
 
