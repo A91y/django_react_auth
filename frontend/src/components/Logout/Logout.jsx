@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import api from "../../services/api";
 
 const Logout = () => {
   const handleLogout = async () => {
@@ -8,9 +8,10 @@ const Logout = () => {
       const refreshToken = localStorage.getItem("refreshToken");
 
       // Make a POST request to the Django logout endpoint
-      const response = await axios.post("http://localhost:8000/api/logout/", {
+      await api.post("/logout/", {
         refresh_token: refreshToken,
       });
+
       // Clear tokens and user data from local storage
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
@@ -26,7 +27,6 @@ const Logout = () => {
 
   return (
     <div>
-      {/* <h2>Logout</h2> */}
       <button onClick={handleLogout}>Logout</button>
     </div>
   );

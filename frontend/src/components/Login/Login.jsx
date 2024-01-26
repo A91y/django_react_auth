@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import { Navigate } from 'react-router-dom';
 
 const Login = () => {
@@ -9,6 +9,7 @@ const Login = () => {
   });
 
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const isAuthenticated = localStorage.getItem('accessToken') !== null;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,7 +17,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', formData);
+      const response = await api.post('/login/', formData);
       const { access, refresh, user } = response.data;
 
       // Store tokens and user data in local storage
@@ -35,6 +36,11 @@ const Login = () => {
     e.preventDefault();
     handleLogin();
   };
+
+  if (isAuthenticated) {
+    // Redirect to '/dashboard' if already authenticated
+    return <Navigate to="/" />;
+  }
 
   if (loginSuccess) {
     // Redirect to '/dashboard' after successful login
