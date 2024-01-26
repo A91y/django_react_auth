@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import api from "../../services/api";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -7,8 +7,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const accessToken = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8000/api/user/', {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await api.get("/user/", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -16,10 +16,10 @@ const Dashboard = () => {
 
         setUser(response.data);
       } catch (error) {
-        console.error('Error fetching user details', error.response.data);
+        console.error("Error fetching user details", error.response.data);
         if (error.response.status === 401) {
           // Redirect to login if the access token is not valid or expired
-          window.location.href = '/login';
+          window.location.href = "/login";
         } else {
           // Handle other errors as needed
         }
@@ -35,7 +35,9 @@ const Dashboard = () => {
         <>
           <h2>Welcome to the Dashboard, {user.first_name}!</h2>
           {/* Add your dashboard content here */}
-          <p>This is your personalized dashboard. Customize it with your content!</p>
+          <p>
+            This is your personalized dashboard. Customize it with your content!
+          </p>
         </>
       ) : (
         <p>Loading...</p>

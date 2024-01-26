@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import React, { useState } from "react";
+import api from "../../services/api";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const isAuthenticated = localStorage.getItem("accessToken") !== null;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,18 +17,18 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', formData);
+      const response = await api.post("/login/", formData);
       const { access, refresh, user } = response.data;
 
       // Store tokens and user data in local storage
-      localStorage.setItem('accessToken', access);
-      localStorage.setItem('refreshToken', refresh);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      console.log('Login successful');
+      console.log("Login successful");
       setLoginSuccess(true); // Set login success to trigger navigation
     } catch (error) {
-      console.error('Login failed', error.response.data);
+      console.error("Login failed", error.response.data);
     }
   };
 
@@ -35,6 +36,11 @@ const Login = () => {
     e.preventDefault();
     handleLogin();
   };
+
+  if (isAuthenticated) {
+    // Redirect to '/dashboard' if already authenticated
+    return <Navigate to="/" />;
+  }
 
   if (loginSuccess) {
     // Redirect to '/dashboard' after successful login
@@ -49,7 +55,12 @@ const Login = () => {
         <input type="email" name="email" onChange={handleChange} required />
 
         <label>Password:</label>
-        <input type="password" name="password" onChange={handleChange} required />
+        <input
+          type="password"
+          name="password"
+          onChange={handleChange}
+          required
+        />
 
         <button type="submit">Login</button>
       </form>
